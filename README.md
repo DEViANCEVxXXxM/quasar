@@ -6,6 +6,10 @@ A black hole visualization that runs in your browser.
 Quasar is a single web page that shows a spinning black hole and the effects around it, such as light bending, the event horizon, jets, and radiation.
 
 ## How to use
+0. [Try on Pages](https://deviancevxxxxm.github.io/quasar/)
+   
+   or
+   
 1. Download or clone this repository.
 2. Open `index.html` in a web browser.
 3. Drag to rotate the view.
