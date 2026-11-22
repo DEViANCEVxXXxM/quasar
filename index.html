@@ -16,6 +16,7 @@
     border:1px solid rgba(160,180,255,.16);border-radius:14px;color:#dfe6ff;font-size:13px;
     box-shadow:0 8px 40px rgba(0,0,0,.45);max-height:calc(100vh - 28px);overflow:auto;user-select:none}
   .hd{margin-bottom:6px;font-size:14px;letter-spacing:.02em}
+  .sec{margin:10px 0 2px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.55;padding:4px 2px}
   .row{display:flex;align-items:center;gap:10px;padding:7px 4px;cursor:pointer;border-top:1px solid rgba(255,255,255,.06)}
   .row input{display:none}
   .row i{flex:none;width:30px;height:17px;border-radius:9px;background:rgba(255,255,255,.14);position:relative;transition:.2s}
@@ -50,7 +51,7 @@
 <div id="labels"></div>
 
 <div id="panel">
-  <div class="hd"><b>Black hole lab</b></div>
+  <div class="hd"><b>QUASAR LAB</b></div>
   <label class="row" title="Light is bent by gravity: Einstein ring, shadow, photon ring and mirrored images of the far side.">
     <input type="checkbox" data-k="lens" checked><i></i>
     <span>Gravitational lensing<small>light bends around mass</small></span></label>
@@ -81,6 +82,46 @@
   <label class="row" title="Show or hide the explanatory labels.">
     <input type="checkbox" data-k="labels"><i></i>
     <span>Labels</span></label>
+
+  <div class="sec">Scene</div>
+  <label class="row" title="Outer spiral galaxy with dust lanes.">
+    <input type="checkbox" data-k="galaxy" checked><i></i>
+    <span>Galaxy disk<small>spiral arms + dust lanes</small></span></label>
+  <label class="row" title="Torus and hot inner accretion disk.">
+    <input type="checkbox" data-k="disk" checked><i></i>
+    <span>Accretion disk<small>torus + hot inner ring</small></span></label>
+  <label class="row" title="Twin relativistic jets along the spin axis.">
+    <input type="checkbox" data-k="jets" checked><i></i>
+    <span>Relativistic jets<small>twin beams</small></span></label>
+  <label class="row" title="Gas spiraling inward as tidal streams.">
+    <input type="checkbox" data-k="infall" checked><i></i>
+    <span>Infall streams<small>spiraling gas</small></span></label>
+  <label class="row" title="Radiation-pressure wind, visible near/above the Eddington limit.">
+    <input type="checkbox" data-k="wind" checked><i></i>
+    <span>Radiation wind<small>L/L_Edd driven</small></span></label>
+  <label class="row" title="Distant background starfield.">
+    <input type="checkbox" data-k="stars" checked><i></i>
+    <span>Background stars<small>distant sky</small></span></label>
+
+  <div class="sec">View</div>
+  <label class="row" title="Latitude/longitude grid on the horizon and ergosphere spheres.">
+    <input type="checkbox" data-k="grid" checked><i></i>
+    <span>Shell grid<small>lat/long on spheres</small></span></label>
+  <label class="row" title="Slow automatic camera rotation around the hole.">
+    <input type="checkbox" data-k="autorot"><i></i>
+    <span>Auto-orbit<small>slow camera rotation</small></span></label>
+  <div class="sl">
+    <div class="r"><span>Simulation speed</span><output id="spdOut">1.00</output></div>
+    <input type="range" id="spd" min="0.1" max="3" step="0.01" value="1">
+  </div>
+  <div class="sl">
+    <div class="r"><span>Glow intensity</span><output id="glowOut">1.00</output></div>
+    <input type="range" id="glow" min="0" max="2" step="0.01" value="1">
+  </div>
+  <div class="sl">
+    <div class="r"><span>Exposure</span><output id="expoOut">1.00</output></div>
+    <input type="range" id="expo" min="0.5" max="2" step="0.01" value="1">
+  </div>
 </div>
 <div class="hint">Drag to orbit &middot; Scroll to zoom</div>
 
@@ -109,6 +150,7 @@
     attribute float aType;
     uniform mat4 uView, uProj;
     uniform float uTime, uFlow, uScale, uMaxSize, uFade, uLayer, uZc, uEdd, uHawk, uSing;
+    uniform float uGalaxyOn, uDiskOn, uJetsOn, uInfallOn, uWindOn, uStarsOn;
     varying vec4 vCol;
     const float RH = ${R_PLUS.toFixed(4)};
     bool isT(float t){ return abs(aType - t) < 0.5; }
@@ -212,6 +254,16 @@
         a *= uSing * (0.6 + 0.4 * sin(uTime * 5.0 + sd * 30.0));
       }
 
+      // per-group visibility
+      float grp = 1.0;
+      if (isT(0.0) || isT(6.0)) grp = uGalaxyOn;
+      else if (isT(1.0) || isT(9.0) || isT(14.0)) grp = uDiskOn;
+      else if (isT(2.0) || isT(3.0)) grp = uJetsOn;
+      else if (isT(4.0)) grp = uStarsOn;
+      else if (isT(7.0) || isT(8.0)) grp = uInfallOn;
+      else if (isT(13.0)) grp = uWindOn;
+      a *= grp;
+
       vec4 vp = uView * vec4(p, 1.0);
       vec4 pos = uProj * vp;
       gl_Position = pos;
@@ -248,7 +300,7 @@
     #endif
     varying vec2 vUv;
     uniform sampler2D uBack, uFront;
-    uniform float uAsp, uR, uRb, uHalo, uBeam;
+    uniform float uAsp, uR, uRb, uHalo, uBeam, uGlow, uExposure;
     uniform vec3 uBg;
     vec3 bk(vec2 dir, float d, float R){
       // point-mass lens: the pixel at distance d shows the source at d - R^2/d
@@ -268,10 +320,10 @@
       float ring = exp(-pow((d - uRb * 1.03) / (uRb * 0.035), 2.0));
       float ring2 = exp(-pow((d - uRb * 1.085) / (uRb * 0.016), 2.0));   // higher-order photon ring
       float halo = exp(-pow((d - uRb * 1.03) / (uRb * 0.22), 2.0));
-      col += uHalo * (vec3(1.0, 0.82, 0.55) * (ring * 1.1 + ring2 * 0.35) * beam + vec3(1.0, 0.55, 0.35) * halo * 0.12);
+      col += uHalo * uGlow * (vec3(1.0, 0.82, 0.55) * (ring * 1.1 + ring2 * 0.35) * beam + vec3(1.0, 0.55, 0.35) * halo * 0.12);
       vec4 f = texture2D(uFront, vUv);
       col = col * (1.0 - f.a) + f.rgb;                    // matter in front of the hole
-      gl_FragColor = vec4(col, 1.0);
+      gl_FragColor = vec4(col * uExposure, 1.0);
     }`;
 
   // Translucent shells: event horizon (sphere r+) and Kerr ergosphere r = M + sqrt(M^2 - a^2 cos^2(theta))
@@ -295,7 +347,7 @@
     precision mediump float;
     varying vec3 vP, vN, vV;
     uniform vec3 uColor;
-    uniform float uAlpha, uTime, uSpin;
+    uniform float uAlpha, uTime, uSpin, uGrid;
     void main(){
       vec3 N = normalize(vN), V = normalize(vV);
       float fr = pow(1.0 - abs(dot(N, V)), 2.2);
@@ -304,7 +356,7 @@
       float gLon = abs(fract(lon * 8.0 / 6.2831853 + 0.5) - 0.5);
       float gLat = abs(fract(lat * 6.0 / 3.14159265 + 0.5) - 0.5);
       float line = (1.0 - smoothstep(0.0, 0.035, gLon)) + (1.0 - smoothstep(0.0, 0.05, gLat));
-      float a = (0.08 + fr * 0.9 + line * 0.22) * uAlpha;
+      float a = (0.08 + fr * 0.9 + line * 0.22 * uGrid) * uAlpha;
       gl_FragColor = vec4(uColor * a, a);
     }`;
 
@@ -328,9 +380,10 @@
   const P = makeProg(VS, FS, { aData: 0, aCol: 1, aMisc: 2, aType: 3 });
   const C = makeProg(CVS, CFS, { aPos: 0 });
   const MP = makeProg(MVS, MFS, { aPos: 0 });
-  const PU = uniforms(P, ['uView','uProj','uTime','uFlow','uScale','uMaxSize','uFade','uLayer','uZc','uEdd','uHawk','uSing']);
-  const CU = uniforms(C, ['uBack','uFront','uAsp','uR','uRb','uHalo','uBeam','uBg']);
-  const MU = uniforms(MP, ['uView','uProj','uKerr','uColor','uAlpha','uTime','uSpin']);
+  const PU = uniforms(P, ['uView','uProj','uTime','uFlow','uScale','uMaxSize','uFade','uLayer','uZc','uEdd','uHawk','uSing',
+                         'uGalaxyOn','uDiskOn','uJetsOn','uInfallOn','uWindOn','uStarsOn']);
+  const CU = uniforms(C, ['uBack','uFront','uAsp','uR','uRb','uHalo','uBeam','uBg','uGlow','uExposure']);
+  const MU = uniforms(MP, ['uView','uProj','uKerr','uColor','uAlpha','uTime','uSpin','uGrid']);
 
   /* ================= particle generation ================= */
   const TAU = Math.PI * 2, rnd = Math.random;
@@ -574,8 +627,15 @@
   resize();
 
   /* ================= UI state ================= */
-  const state = { lens: true, horizon: true, ergo: true, sing: true, hawk: true, edd: false, labels: false, lam: 0.7 };
-  const cur = { lens: 1, horizon: 1, ergo: 1, sing: 1, hawk: 1 };
+  const state = {
+    lens: true, horizon: true, ergo: true, sing: true, hawk: true, edd: false, labels: false, lam: 0.7,
+    galaxy: true, disk: true, jets: true, infall: true, wind: true, stars: true, grid: true, autorot: false,
+    speed: 1, glow: 1, expo: 1
+  };
+  const cur = {
+    lens: 1, horizon: 1, ergo: 1, sing: 1, hawk: 1,
+    galaxy: 1, disk: 1, jets: 1, infall: 1, wind: 1, stars: 1, grid: 1
+  };
   document.querySelectorAll('#panel input[type=checkbox]').forEach(el => {
     el.addEventListener('change', () => {
       state[el.dataset.k] = el.checked;
@@ -595,6 +655,13 @@
   }
   lamEl.addEventListener('input', updLam);
   updLam();
+
+  const spdEl = document.getElementById('spd'), spdOut = document.getElementById('spdOut');
+  spdEl.addEventListener('input', () => { state.speed = parseFloat(spdEl.value); spdOut.textContent = state.speed.toFixed(2); });
+  const glowEl = document.getElementById('glow'), glowOut = document.getElementById('glowOut');
+  glowEl.addEventListener('input', () => { state.glow = parseFloat(glowEl.value); glowOut.textContent = state.glow.toFixed(2); });
+  const expoEl = document.getElementById('expo'), expoOut = document.getElementById('expoOut');
+  expoEl.addEventListener('input', () => { state.expo = parseFloat(expoEl.value); expoOut.textContent = state.expo.toFixed(2); });
 
   /* ================= labels ================= */
   const labelsEl = document.getElementById('labels'), linesEl = document.getElementById('lines');
@@ -687,15 +754,21 @@
   function frame(now) {
     const t = (now - t0) / 1000;
     const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    const st = t * state.speed;
 
     // ease feature amounts (smooth fades instead of pops)
-    const tgt = { lens: state.lens, horizon: state.horizon, ergo: state.ergo, sing: state.sing, hawk: state.hawk };
+    const tgt = {
+      lens: state.lens, horizon: state.horizon, ergo: state.ergo, sing: state.sing, hawk: state.hawk,
+      galaxy: state.galaxy, disk: state.disk, jets: state.jets, infall: state.infall,
+      wind: state.wind, stars: state.stars, grid: state.grid
+    };
     for (const k in cur) cur[k] += ((tgt[k] ? 1 : 0) - cur[k]) * Math.min(1, dt * 7);
     // the Eddington response has inertia: the wind builds up and dies down gradually
     const eddTarget = state.edd ? state.lam : 0.7;
     eddS += (eddTarget - eddS) * Math.min(1, dt * 1.5);
-    flow += dt * Math.max(0, Math.min(1, 1.7 - eddS));
+    flow += dt * state.speed * Math.max(0, Math.min(1, 1.7 - eddS));
 
+    if (state.autorot) tYaw += dt * 0.3;
     yaw += (tYaw - yaw) * 0.08;
     pitch += (tPitch - pitch) * 0.08;
     dist += (tDist - dist) * 0.08;
@@ -725,13 +798,19 @@
     gl.useProgram(P);
     gl.uniformMatrix4fv(PU.uView, false, view);
     gl.uniformMatrix4fv(PU.uProj, false, proj);
-    gl.uniform1f(PU.uTime, t);
+    gl.uniform1f(PU.uTime, st);
     gl.uniform1f(PU.uFlow, flow);
     gl.uniform1f(PU.uFade, Math.min(1, t / 2.5));
     gl.uniform1f(PU.uZc, -dist);
     gl.uniform1f(PU.uEdd, eddS);
     gl.uniform1f(PU.uHawk, cur.hawk);
     gl.uniform1f(PU.uSing, cur.sing);
+    gl.uniform1f(PU.uGalaxyOn, cur.galaxy);
+    gl.uniform1f(PU.uDiskOn, cur.disk);
+    gl.uniform1f(PU.uJetsOn, cur.jets);
+    gl.uniform1f(PU.uInfallOn, cur.infall);
+    gl.uniform1f(PU.uWindOn, cur.wind);
+    gl.uniform1f(PU.uStarsOn, cur.stars);
     bindParticles();
     gl.enable(gl.BLEND);
     for (let layer = 0; layer < 2; layer++) {
@@ -760,6 +839,8 @@
     gl.uniform1f(CU.uRb, rb);
     gl.uniform1f(CU.uHalo, cur.lens * (0.7 + 0.5 * Math.min(eddS, 1.5)));
     gl.uniform1f(CU.uBeam, beam);
+    gl.uniform1f(CU.uGlow, state.glow);
+    gl.uniform1f(CU.uExposure, state.expo);
     gl.uniform3f(CU.uBg, 0.008, 0.01, 0.02);
     gl.bindBuffer(gl.ARRAY_BUFFER, tri);
     useAttribs(1);
@@ -772,7 +853,8 @@
     gl.useProgram(MP);
     gl.uniformMatrix4fv(MU.uView, false, view);
     gl.uniformMatrix4fv(MU.uProj, false, proj);
-    gl.uniform1f(MU.uTime, t);
+    gl.uniform1f(MU.uTime, st);
+    gl.uniform1f(MU.uGrid, cur.grid);
     gl.bindBuffer(gl.ARRAY_BUFFER, meshBuf);
     useAttribs(1);
     gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
