@@ -1,52 +1,25 @@
 # Quasar
 
-A black hole visualization that runs in your browser.
+Independent interactive visualization with DEVIANCE / ATELIER Solo UI.
 
-## What it is
-Quasar is a single web page that shows a spinning black hole and the effects around it, such as light bending, the event horizon, jets, and radiation.
+## Run locally
 
-## How to use
-0. [Try on Pages](https://deviancevxxxxm.github.io/quasar/)
-   
-   or
-   
-1. Download or clone this repository.
-2. Open `index.html` in a web browser.
-3. Drag to rotate the view.
-4. Scroll to zoom in and out.
+For best compatibility (especially ES modules/import maps), serve this directory over HTTP:
 
-No install or server is needed.
+```bash
+python -m http.server 8000
+```
 
-## Controls
-The panel on the right lets you turn things on and off:
+Then open `http://localhost:8000/`. Static GitHub Pages deployment also works.
 
-- Gravitational lensing
-- Event horizon
-- Ergosphere
-- Singularity
-- Hawking radiation
-- Eddington limit (with a brightness slider)
-- Labels
+## Structure
 
-Scene toggles:
-- Galaxy disk
-- Accretion disk
-- Relativistic jets
-- Infall streams
-- Radiation wind
-- Background stars
+- `index.html` — original Quasar scene logic, shaders and page markup
+- `assets/atelier-ui.css` — shared reusable UI design system (local copy)
+- `assets/atelier-ui.js` — independent, scene-agnostic UI enhancement (local copy)
 
-View options:
-- Shell grid
-- Auto-orbit
+## Design
 
-Sliders:
-- Simulation speed
-- Glow intensity
-- Exposure
+Accent: `#38bdf8` · Relativistic black hole simulation.
 
-## Files
-- `index.html` — the main page.
-
-## License
-There is no license file. Please ask the repository owner before reusing or sharing this project.
+This repository is fully separate from the other demonstrations: no scene picker or outgoing project-to-project navigation. The original simulation code is unchanged. Original third-party CDN imports, where present, still require internet access.

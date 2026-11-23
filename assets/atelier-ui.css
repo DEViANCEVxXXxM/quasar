@@ -1,0 +1,180 @@
+/* DEVIANCE / ATELIER UI 3.0 — canonical scene-agnostic design system */
+:root{
+ --ui-ink:#edf2fa;--ui-muted:#a0acc0;--ui-faint:#65758c;
+ --ui-surface:rgba(9,15,27,.87);--ui-surface-deep:rgba(8,13,23,.95);
+ --ui-stroke:rgba(198,215,243,.135);--ui-line:rgba(203,221,249,.09);
+ --ui-radius:17px;--ui-shadow:0 18px 46px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.055);
+ --ui-font:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+ --ui-mono:ui-monospace,'SFMono-Regular',Consolas,monospace;
+ --ui-accent:#8d75ff;--ui-rgb:141,117,255;--ui-panel-w:336px;
+}
+html,body{font-family:var(--ui-font)!important;}
+button,input,select{font-family:var(--ui-font)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ui-accent)!important;outline-offset:3px}
+body .top-bar{position:fixed!important;top:17px!important;left:18px!important;right:18px!important;height:56px!important;min-height:56px!important;transform:none!important;display:flex!important;justify-content:space-between!important;align-items:center!important;gap:16px!important;z-index:75!important;pointer-events:none!important}
+body .top-bar>*{pointer-events:auto!important}
+/* New identity: same icon, title hierarchy, and status affordance in every studio */
+body .brand-group{position:relative!important;display:flex!important;flex:0 1 auto!important;align-items:center!important;gap:11px!important;height:56px!important;min-height:56px!important;width:auto!important;max-width:min(535px,52vw)!important;margin:0!important;padding:7px 13px 7px 8px!important;border:1px solid var(--ui-stroke)!important;border-radius:var(--ui-radius)!important;background:var(--ui-surface)!important;box-shadow:var(--ui-shadow)!important;backdrop-filter:blur(22px) saturate(135%)!important;-webkit-backdrop-filter:blur(22px) saturate(135%)!important;overflow:visible!important}
+body .brand-group>.brand-badge{display:none!important}
+.ds-brand-copy{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px;flex:0 1 235px}
+.ds-brand-kicker{color:var(--ui-faint);font:700 8.5px/1 var(--ui-mono);letter-spacing:.18em;white-space:nowrap}
+body .brand-title{color:var(--ui-ink)!important;-webkit-text-fill-color:var(--ui-ink)!important;background:none!important;font-size:12.5px!important;line-height:1.18!important;letter-spacing:.025em!important;font-weight:730!important;text-transform:none!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;display:block!important;max-width:100%}
+body .brand-sub{display:none!important}
+body .badge-status,body .fps-pill{margin:0!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;gap:7px!important;height:30px!important;min-height:30px!important;max-width:190px!important;min-width:0!important;padding:0 9px!important;border-radius:8px!important;border:1px solid var(--ui-line)!important;background:rgba(255,255,255,.037)!important;color:var(--ui-muted)!important;box-shadow:none!important;font:650 10px/1.2 var(--ui-mono)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+body .badge-status{color:var(--ui-accent)!important}
+body .badge-status:before{height:6px!important;width:6px!important;flex:0 0 6px!important;box-shadow:0 0 10px var(--ui-accent)!important;background:var(--ui-accent)!important}
+.ds-fps-dot{width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--ui-accent);box-shadow:0 0 9px rgba(var(--ui-rgb),.5)}
+/* Top actions become one consistent family of icon-only tools with tooltips. */
+body .action-group,body .top-actions{position:static!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;gap:6px!important;margin:0!important;min-width:0!important}
+body .glass-btn,body .icon-btn{position:relative!important;display:inline-grid!important;place-items:center!important;flex:0 0 39px!important;width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;max-width:39px!important;margin:0!important;padding:0!important;gap:0!important;font-size:0!important;color:var(--ui-muted)!important;border:1px solid var(--ui-stroke)!important;border-radius:11px!important;background:var(--ui-surface)!important;box-shadow:var(--ui-shadow)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;cursor:pointer!important;transition:background .16s,color .16s,border-color .16s,transform .16s!important}
+body .glass-btn::before{content:none!important}
+body .icon-btn>svg,body .glass-btn>svg{display:none!important}
+.ds-action-icon{display:grid;place-items:center;width:19px;height:19px;pointer-events:none}
+.ds-action-icon svg{display:block;width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+body .glass-btn:hover,body .icon-btn:hover{background:rgba(255,255,255,.105)!important;border-color:rgba(var(--ui-rgb),.5)!important;color:var(--ui-ink)!important;transform:translateY(-1px)!important;box-shadow:var(--ui-shadow)!important}
+body .glass-btn.active,body .icon-btn.active{background:rgba(var(--ui-rgb),.16)!important;border-color:rgba(var(--ui-rgb),.45)!important;color:var(--ui-accent)!important}
+body .glass-btn[data-ui-tooltip]:hover:after,body .icon-btn[data-ui-tooltip]:hover:after{content:attr(data-ui-tooltip);position:absolute;top:calc(100% + 11px);right:0;padding:7px 9px;z-index:100;background:var(--ui-surface-deep);border:1px solid var(--ui-stroke);border-radius:8px;white-space:nowrap;font:600 10px var(--ui-font);color:var(--ui-ink);box-shadow:var(--ui-shadow);pointer-events:none}
+/* Right-hand inspector: identical hierarchy and navigation on all five. */
+body #inspector,body .inspector{position:fixed!important;top:85px!important;bottom:85px!important;right:18px!important;left:auto!important;width:var(--ui-panel-w)!important;max-width:calc(100vw - 36px)!important;height:auto!important;min-height:0!important;max-height:none!important;display:flex!important;flex-direction:column!important;padding:0!important;border:1px solid var(--ui-stroke)!important;border-radius:var(--ui-radius)!important;background:var(--ui-surface)!important;box-shadow:var(--ui-shadow)!important;backdrop-filter:blur(25px) saturate(128%)!important;-webkit-backdrop-filter:blur(25px) saturate(128%)!important;overflow:hidden!important;z-index:70!important;transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .24s!important}
+body #inspector.collapsed,body .inspector.collapsed{transform:translateX(calc(100% + 32px))!important;opacity:0!important;pointer-events:none!important}
+body .drawer-header,body .ds-inspector-heading{flex:0 0 auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;min-height:73px!important;padding:15px 17px!important;border-bottom:1px solid var(--ui-line)!important;background:transparent!important;flex-wrap:nowrap!important}
+.ds-inspector-id{display:flex;flex-direction:column;gap:5px;min-width:0}
+.ds-inspector-overline{font:750 9px/1 var(--ui-mono);letter-spacing:.155em;color:var(--ui-faint)}
+body .drawer-title,.ds-inspector-title{margin:0!important;color:var(--ui-ink)!important;font:750 15px/1.1 var(--ui-font)!important;letter-spacing:-.02em!important;text-transform:none!important}
+.ds-inspector-indicator{display:flex;align-items:center;gap:6px;white-space:nowrap;font:700 9px var(--ui-mono);letter-spacing:.055em;color:var(--ui-faint)}
+.ds-inspector-indicator:before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ui-accent);box-shadow:0 0 10px rgba(var(--ui-rgb),.55)}
+body .tab-header,body .drawer-tabs{display:flex!important;align-items:stretch!important;gap:5px!important;flex:0 0 auto!important;width:100%!important;padding:8px 12px 10px!important;border:0!important;border-bottom:1px solid var(--ui-line)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;justify-content:space-between!important}
+body .tab-btn,body .d-tab{flex:1 1 0!important;min-width:0!important;min-height:36px!important;padding:7px 7px!important;border:1px solid transparent!important;border-radius:9px!important;background:transparent!important;box-shadow:none!important;color:var(--ui-muted)!important;letter-spacing:.035em!important;font:700 10px/1.2 var(--ui-font)!important;text-align:center!important;text-transform:none!important;white-space:nowrap!important;cursor:pointer!important;transition:background .15s,color .15s,border-color .15s!important}
+body .tab-btn:hover,body .d-tab:hover{color:var(--ui-ink)!important;background:rgba(255,255,255,.047)!important}
+body .tab-btn.active,body .d-tab.active{color:var(--ui-accent)!important;background:rgba(var(--ui-rgb),.13)!important;border-color:rgba(var(--ui-rgb),.16)!important;box-shadow:inset 0 1px rgba(var(--ui-rgb),.08)!important}
+body .drawer-body,body .tab-content{min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain!important;scrollbar-width:thin!important;scrollbar-color:rgba(255,255,255,.17) transparent!important}
+body .drawer-body{flex:1 1 auto!important;padding:17px 17px 25px!important}
+body .tab-content{flex:1 1 auto!important;padding:17px 17px 25px!important}
+body .tab-content:not(.active){display:none!important}
+body .section-label,body .hud-title{color:var(--ui-faint)!important;font-size:9px!important;font-weight:750!important;letter-spacing:.15em!important;text-transform:uppercase!important}
+body .section-label::after{background:var(--ui-line)!important}
+body .control-row{border-radius:9px!important;padding:9px 6px!important;margin:0 -6px!important;gap:9px!important;transition:background .15s!important}
+body .control-row:hover{background:rgba(255,255,255,.036)!important}
+body .control-row span,body .ctrl-label,body .slider-header{color:var(--ui-muted)!important}
+body .control-row small{color:var(--ui-faint)!important}
+body .ctrl-label span.val,body .slider-header output{color:var(--ui-accent)!important}
+body .slider-input,body input[type=range]{accent-color:var(--ui-accent)!important}
+body .slider-input::-webkit-slider-thumb,body input[type=range]::-webkit-slider-thumb{background:var(--ui-accent)!important;border-color:var(--ui-accent)!important;box-shadow:0 0 10px rgba(var(--ui-rgb),.3)!important}
+body .slider-group,body .ctrl-group{margin-bottom:18px!important}
+body .trigger-substorm-btn{border:1px solid rgba(var(--ui-rgb),.32)!important;border-radius:10px!important;background:rgba(var(--ui-rgb),.105)!important;color:var(--ui-ink)!important;box-shadow:none!important}
+body .trigger-substorm-btn:hover{background:rgba(var(--ui-rgb),.22)!important;border-color:rgba(var(--ui-rgb),.55)!important}
+/* The small controls follow exactly the same color and behavior in every lab. */
+body .switch{width:34px!important;height:20px!important;border-radius:12px!important;background:rgba(255,255,255,.12)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)!important;transition:background .18s!important}
+body .switch:after{width:14px!important;height:14px!important;top:3px!important;left:3px!important;transition:left .18s!important;background:#dae2f0!important;box-shadow:0 1px 5px rgba(0,0,0,.28)!important}
+body .control-row input:checked+.switch{background:var(--ui-accent)!important;box-shadow:0 0 12px rgba(var(--ui-rgb),.19)!important}
+body .control-row input:checked+.switch:after{left:17px!important;background:#0a101a!important;box-shadow:none!important}
+body .preset-grid{gap:7px!important}
+body .preset-btn{background:rgba(255,255,255,.035)!important;border-color:var(--ui-stroke)!important;border-radius:10px!important;color:var(--ui-muted)!important;box-shadow:none!important}
+body .preset-btn.active{background:rgba(var(--ui-rgb),.13)!important;border-color:rgba(var(--ui-rgb),.40)!important;color:var(--ui-accent)!important}
+body .stat-card{background:rgba(255,255,255,.024)!important;border:1px solid var(--ui-line)!important;border-radius:11px!important}
+body .stat-val{color:var(--ui-ink)!important}
+/* All views share the same bottom component, regardless of number of items. */
+body .camera-dock{position:fixed!important;z-index:76!important;bottom:18px!important;left:50%;transform:translateX(-50%)!important;display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:nowrap!important;max-width:calc(100vw - 180px)!important;min-height:49px!important;width:max-content!important;margin:0!important;padding:6px!important;background:var(--ui-surface-deep)!important;border:1px solid var(--ui-stroke)!important;border-radius:15px!important;box-shadow:var(--ui-shadow)!important;backdrop-filter:blur(22px)!important;-webkit-backdrop-filter:blur(22px)!important;white-space:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;overscroll-behavior-x:contain!important}
+body .camera-dock::-webkit-scrollbar{display:none!important}
+.ds-dock-label{display:inline-flex;align-items:center;gap:7px;padding:0 10px 0 9px;margin-right:2px;flex:0 0 auto;letter-spacing:.12em;font:750 9px var(--ui-mono);color:var(--ui-faint);border-right:1px solid var(--ui-line);height:22px}
+.ds-dock-label:before{content:'';display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--ui-accent)}
+body .cam-tab,body .dock-btn{flex:0 0 auto!important;min-height:34px!important;padding:8px 12px!important;border-radius:9px!important;border:1px solid transparent!important;background:transparent!important;color:var(--ui-muted)!important;font:650 11px/1.2 var(--ui-font)!important;letter-spacing:0!important;box-shadow:none!important;cursor:pointer!important;transition:color .15s,background .15s!important}
+body .cam-tab:hover,body .dock-btn:hover{color:var(--ui-ink)!important;background:rgba(255,255,255,.055)!important}
+body .cam-tab.active,body .dock-btn.active{color:var(--ui-accent)!important;background:rgba(var(--ui-rgb),.15)!important;border-color:rgba(var(--ui-rgb),.20)!important;box-shadow:none!important;font-weight:760!important}
+/* Telemetry and help are accessory cards with identical treatment. */
+body .hud-overlay{position:fixed!important;top:85px!important;left:18px!important;width:292px!important;min-width:0!important;max-width:calc(100vw - 36px)!important;padding:17px!important;background:var(--ui-surface)!important;border:1px solid var(--ui-stroke)!important;border-radius:var(--ui-radius)!important;box-shadow:var(--ui-shadow)!important;backdrop-filter:blur(22px)!important;z-index:66!important}
+body .hud-val{color:var(--ui-ink)!important;white-space:nowrap!important}
+body .hud-row{gap:10px!important;line-height:1.5!important;margin-top:8px!important}
+body .kp-fill{background:linear-gradient(90deg,var(--ui-accent),#7ebfd3)!important}
+/* Quasar's scientific annotations become a separate quiet readable index. */
+body .annotation-label,body .annotation-card{box-shadow:var(--ui-shadow)}
+/* Toggleable shortcut help: avoids the dock collision in the original screen. */
+.ds-help{position:fixed;bottom:20px;left:18px;z-index:79}
+.ds-help-toggle{height:37px;display:flex;gap:9px;align-items:center;padding:0 12px;min-width:108px;border:1px solid var(--ui-stroke);border-radius:11px;background:var(--ui-surface-deep);color:var(--ui-muted);box-shadow:var(--ui-shadow);font:650 10px var(--ui-font);cursor:pointer}
+.ds-help-toggle:hover,.ds-help[aria-expanded='true'] .ds-help-toggle{color:var(--ui-ink);border-color:rgba(var(--ui-rgb),.35)}
+.ds-help-mark{font:800 16px var(--ui-mono);color:var(--ui-accent)}
+.ds-help-panel{display:none;position:absolute;bottom:calc(100% + 11px);left:0;width:260px;max-width:calc(100vw - 28px);padding:15px 16px;border:1px solid var(--ui-stroke);border-radius:13px;background:var(--ui-surface-deep);box-shadow:var(--ui-shadow);backdrop-filter:blur(20px);color:var(--ui-muted);font:500 11px/2 var(--ui-font)}
+.ds-help.is-open .ds-help-panel{display:block}
+.ds-help-panel:before{content:'KEYBOARD REFERENCE';display:block;color:var(--ui-faint);font:750 9px var(--ui-mono);letter-spacing:.14em;margin-bottom:8px}
+.ds-help-panel .shortcut-hints,.ds-help-panel .keyboard-hint{display:block!important;position:static!important;inset:auto!important;width:auto!important;max-width:none!important;padding:0!important;margin:0!important;color:var(--ui-muted)!important;background:none!important;box-shadow:none!important;border:0!important;opacity:1!important;pointer-events:auto!important;font:500 11px/2 var(--ui-font)!important}
+.ds-help-panel kbd{font:700 10px var(--ui-mono);padding:3px 6px;margin-right:4px;border:1px solid var(--ui-stroke);border-radius:5px;color:var(--ui-ink);background:rgba(255,255,255,.055)}
+.ds-shortcut-row{padding:3px 0;display:flex;align-items:center;gap:8px}
+/* Scene switcher: visual identity + one consistent route across the suite. */
+body.ui-hidden .ds-help,body.ui-hidden .ds-scene-menu{opacity:0!important;pointer-events:none!important}
+/* Dense laptops and mobiles preserve the same hierarchy without collisions. */
+@media(max-width:1199px){:root{--ui-panel-w:315px}body .brand-group{max-width:min(450px,49vw)!important}body .camera-dock{max-width:calc(100vw - 138px)!important}body .cam-tab,body .dock-btn{padding:8px 10px!important;font-size:10px!important}}
+@media(max-width:1030px){:root{--ui-panel-w:326px}body #inspector,body .inspector{top:84px!important;right:12px!important;bottom:73px!important}body .camera-dock{bottom:14px!important;max-width:calc(100vw - 145px)!important}body .hud-overlay{top:84px!important;left:12px!important}body .brand-group{max-width:calc(100vw - 275px)!important}body.ds-panel-open .camera-dock,body.ds-panel-open .hud-overlay{opacity:0!important;pointer-events:none!important}.ds-help{left:12px;bottom:19px}.ds-scene-menu{left:12px;top:83px}}
+@media(max-width:650px){body .top-bar{top:10px!important;left:11px!important;right:11px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:6px!important;height:94px!important;min-height:94px!important}body .brand-group{width:100%!important;max-width:100%!important;height:46px!important;min-height:46px!important;padding:4px 9px 4px 5px!important;gap:9px!important;border-radius:12px!important}body .ds-app-switch{width:36px;height:36px;flex-basis:36px}body .ds-brand-copy{gap:3px;flex:1 1 auto}body .ds-brand-kicker{font-size:7.5px;letter-spacing:.11em}body .brand-title{font-size:11.5px!important}body .badge-status,body .fps-pill{max-width:120px!important;font-size:8.5px!important;height:27px!important;min-height:27px!important;padding:0 7px!important}body .top-actions,body .action-group{position:static!important;align-self:flex-end!important;justify-content:flex-end!important;width:100%!important;gap:5px!important}body .glass-btn,body .icon-btn{height:35px!important;width:35px!important;min-width:35px!important;max-width:35px!important;min-height:35px!important;flex-basis:35px!important;border-radius:9px!important}body #inspector,body .inspector{top:108px!important;right:11px!important;bottom:70px!important;width:min(358px,calc(100vw - 22px))!important}body .hud-overlay{top:110px!important;left:11px!important;width:min(240px,calc(100vw - 22px))!important;padding:12px!important}.ds-scene-menu{top:63px;left:11px}body .camera-dock{bottom:11px!important;max-width:calc(100vw - 22px)!important;min-height:45px!important;padding:4px!important}body .cam-tab,body .dock-btn{font-size:10px!important;padding:7px 10px!important;min-height:32px!important}.ds-dock-label{font-size:8px;padding:0 8px}.ds-help{left:11px;bottom:66px}.ds-help-toggle{height:31px;min-width:91px;padding:0 10px;font-size:10px}body.ds-panel-open .ds-help{bottom:15px}body[data-ds-project='dimension-lab.html'] .scene-caption{top:max(300px,41vh)!important}}
+@media(max-height:610px) and (min-width:651px){body #inspector,body .inspector{top:83px!important;bottom:70px!important}body .hud-overlay{top:84px!important;max-height:calc(100vh - 170px);overflow:auto}}
+@media(prefers-reduced-motion:reduce){body .glass-btn,body .icon-btn,body .camera-dock,body #inspector,body .inspector{transition-duration:0ms!important}}
+
+/* ATELIER / SOLO EDITION — individual-repository product shell. */
+:root{--ui-surface:rgba(9,15,27,.89);--ui-surface-deep:rgba(8,13,23,.96);--ui-radius:16px;--ui-stroke:rgba(208,220,244,.15);--ui-shadow:0 15px 36px rgba(0,0,0,.39),inset 0 1px rgba(255,255,255,.046)}
+body .top-bar{top:16px!important;left:18px!important;right:18px!important;height:54px!important;min-height:54px!important;align-items:center!important;gap:16px!important}
+body .brand-group{height:54px!important;min-height:54px!important;min-width:0!important;width:auto!important;max-width:min(470px,48vw)!important;gap:11px!important;padding:7px 12px 7px 8px!important;border-radius:15px!important;overflow:hidden!important}
+.ds-project-mark{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border:1px solid rgba(var(--ui-rgb),.30);border-radius:10px;background:rgba(var(--ui-rgb),.115);color:var(--ui-accent)}
+.ds-project-mark svg{width:21px;height:21px;stroke:currentColor;stroke-width:1.55;stroke-linejoin:round;stroke-linecap:round;fill:none}
+body .ds-brand-copy{flex:1 1 auto!important;gap:3px!important}
+body .ds-brand-kicker{font:700 8.5px/1.1 var(--ui-mono)!important;letter-spacing:.145em!important;color:var(--ui-faint)!important}
+body .brand-title{font-size:13px!important;font-weight:725!important;letter-spacing:-.018em!important;text-transform:none!important}
+body .badge-status,body .fps-pill{height:28px!important;min-height:28px!important;max-width:172px!important;border:1px solid var(--ui-line)!important;border-radius:8px!important;background:rgba(255,255,255,.028)!important}
+/* Single surface toolbar: predictable positioning across projects with 3 or 6 actions. */
+body .action-group,body .top-actions{align-self:center!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;flex:0 0 auto!important;gap:4px!important;width:max-content!important;min-width:0!important;max-width:calc(100vw - 36px)!important;padding:5px!important;border:1px solid var(--ui-stroke)!important;border-radius:15px!important;background:var(--ui-surface-deep)!important;box-shadow:var(--ui-shadow)!important;backdrop-filter:blur(21px) saturate(130%)!important;-webkit-backdrop-filter:blur(21px) saturate(130%)!important}
+body .action-group .glass-btn,body .top-actions .icon-btn{display:grid!important;place-items:center!important;flex:0 0 38px!important;width:38px!important;min-width:38px!important;max-width:38px!important;height:38px!important;min-height:38px!important;padding:0!important;background:transparent!important;border:1px solid transparent!important;border-radius:10px!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body .action-group .glass-btn:hover,body .top-actions .icon-btn:hover{color:var(--ui-ink)!important;background:rgba(255,255,255,.095)!important;border-color:rgba(255,255,255,.08)!important;box-shadow:none!important}
+body .action-group .glass-btn.active,body .top-actions .icon-btn.active{color:var(--ui-accent)!important;background:rgba(var(--ui-rgb),.17)!important;border-color:rgba(var(--ui-rgb),.26)!important}
+body .action-group .glass-btn[data-ui-tooltip]:hover:after,body .top-actions .icon-btn[data-ui-tooltip]:hover:after{top:calc(100% + 14px)}
+body #inspector,body .inspector{top:84px!important;bottom:86px!important;right:18px!important;width:var(--ui-panel-w)!important;max-width:calc(100vw - 36px)!important;border-radius:17px!important}
+body .drawer-header,body .ds-inspector-heading{min-height:68px!important;padding:14px 17px!important}
+body .tab-header,body .drawer-tabs{padding:7px 11px 11px!important;gap:5px!important}
+body .tab-btn,body .d-tab{min-height:34px!important;font-size:10px!important}
+/* Spacious but controlled navigation, centered within exposed scene area. */
+body .camera-dock{bottom:17px!important;min-height:49px!important;border-radius:15px!important;max-width:calc(100vw - 180px)!important;padding:5px!important;gap:4px!important;background:var(--ui-surface-deep)!important}
+body .cam-tab,body .dock-btn{min-height:36px!important;padding:8px 12px!important;font-size:10.5px!important;letter-spacing:.01em!important;border-radius:9px!important}
+body .cam-tab.active,body .dock-btn.active{background:rgba(var(--ui-rgb),.18)!important;color:var(--ui-accent)!important;border-color:rgba(var(--ui-rgb),.25)!important;box-shadow:inset 0 1px rgba(255,255,255,.04)!important}
+.ds-dock-label{font-size:8.5px!important;letter-spacing:.12em!important}
+/* Shortcuts remain accessible without taking over the bottom of the scene. */
+.ds-help{position:fixed;left:18px;bottom:20px;z-index:79;max-width:calc(100vw - 36px)}
+.ds-help-toggle{height:37px;min-width:115px;gap:9px;padding:0 11px 0 8px;font:650 11px var(--ui-font);border-radius:12px;color:var(--ui-muted);background:var(--ui-surface-deep);transition:color .15s,background .15s,border-color .15s}
+.ds-help-toggle:hover{background:rgba(24,32,49,.98);color:var(--ui-ink)}
+.ds-help-icon{display:grid;place-items:center;width:24px;height:24px;flex:0 0 24px;border-radius:7px;background:rgba(var(--ui-rgb),.10);color:var(--ui-accent)}
+.ds-help-icon svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.7}
+.ds-help-panel{width:276px;padding:14px 15px;border-radius:14px;line-height:1.65}
+.ds-help-panel .shortcut-hints,.ds-help-panel .keyboard-hint{font-size:11px!important;line-height:1.65!important}
+.ds-help.is-open .ds-help-toggle{border-color:rgba(var(--ui-rgb),.40);color:var(--ui-ink)}
+/* Do not animate when the pointer needs a static fast interface. */
+@media(hover:none){body .glass-btn:hover,body .icon-btn:hover{transform:none!important}}
+@media(max-width:1199px){:root{--ui-panel-w:315px}body .brand-group{max-width:min(430px,46vw)!important}body .camera-dock{max-width:calc(100vw - 156px)!important}body .cam-tab,body .dock-btn{padding:8px 10px!important}}
+/* An overlay inspector on tablets and smaller laptops. */
+@media(max-width:1030px){body #inspector,body .inspector{top:84px!important;bottom:76px!important;right:12px!important}body .brand-group{max-width:calc(100vw - 340px)!important}body .hud-overlay{top:85px!important;left:12px!important}body.ds-panel-open .camera-dock,body.ds-panel-open .hud-overlay,body.ds-panel-open .ds-help{opacity:0!important;pointer-events:none!important}.ds-help{left:12px;bottom:19px}}
+/* A two-tier header begins BEFORE the buttons can collide with the title. */
+@media(max-width:880px){
+ body .top-bar{top:10px!important;left:11px!important;right:11px!important;height:auto!important;min-height:97px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:7px!important}
+ body .brand-group{width:100%!important;max-width:100%!important;height:45px!important;min-height:45px!important;gap:9px!important;padding:4px 9px 4px 5px!important;border-radius:12px!important}
+ body .ds-project-mark{width:35px;height:35px;flex-basis:35px;border-radius:9px}
+ body .brand-title{font-size:12px!important}
+ body .top-actions,body .action-group{position:static!important;align-self:flex-end!important;gap:3px!important;padding:3px!important;max-width:100%!important;border-radius:12px!important}
+ body .action-group .glass-btn,body .top-actions .icon-btn{flex-basis:35px!important;width:35px!important;min-width:35px!important;max-width:35px!important;height:35px!important;min-height:35px!important}
+ body #inspector,body .inspector{top:117px!important;right:11px!important;bottom:74px!important;width:min(352px,calc(100vw - 22px))!important}
+ body .hud-overlay{top:120px!important;left:11px!important}
+ body .camera-dock{bottom:12px!important;max-width:calc(100vw - 155px)!important}
+ body .cam-tab,body .dock-btn{font-size:10px!important;padding:7px 9px!important}
+}
+@media(max-width:650px){
+ body .top-bar{min-height:95px!important;height:auto!important}
+ body .brand-group{height:45px!important;min-height:45px!important}
+ body .ds-brand-kicker{font-size:7.4px!important;letter-spacing:.11em!important}
+ body .brand-title{font-size:11.5px!important}
+ body .badge-status,body .fps-pill{height:26px!important;min-height:26px!important;max-width:124px!important;font-size:8.5px!important;padding:0 7px!important}
+ body #inspector,body .inspector{top:110px!important;bottom:67px!important}
+ body .hud-overlay{top:109px!important;left:11px!important}
+ body .camera-dock{bottom:10px!important;max-width:calc(100vw - 22px)!important;min-height:44px!important}
+ body .cam-tab,body .dock-btn{font-size:10px!important;padding:6px 10px!important;min-height:32px!important}
+ .ds-dock-label{font-size:8px!important;padding:0 7px!important}
+ .ds-help{bottom:66px;left:11px}
+ .ds-help-toggle{height:31px;min-width:105px;padding:0 9px 0 6px;font-size:10px}
+ .ds-help-icon{width:21px;height:21px;flex-basis:21px}
+ .ds-help-icon svg{width:14px;height:14px}
+}
+@media(max-width:395px){body .badge-status,body .fps-pill{max-width:86px!important}body .cam-tab,body .dock-btn{padding:6px 8px!important}}
+@media(max-height:620px) and (min-width:881px){body #inspector,body .inspector{top:81px!important;bottom:71px!important}body .hud-overlay{max-height:calc(100vh - 160px);overflow:auto}}
