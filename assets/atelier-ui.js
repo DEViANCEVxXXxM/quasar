@@ -142,8 +142,9 @@
   const panelBound=panelOpen&&!narrow?inspector.getBoundingClientRect().left:innerWidth-18;
   const helper=help.querySelector('.ds-help-toggle');
   const helperBound=helper?.getBoundingClientRect().right||0;
-  const stageLeft=Math.max(18,helperBound+21);
-  const stageRight=Math.max(stageLeft+165,Math.min(innerWidth-18,panelBound-18));
+  const leftInset=innerWidth>=1200 ? 20+292+20 : 18;
+  const stageLeft=Math.max(leftInset,helperBound+22);
+  const stageRight=Math.max(stageLeft+165,Math.min(innerWidth-18,panelBound-20));
   const allowed=Math.max(165,stageRight-stageLeft);
   const width=Math.min(dock.scrollWidth,allowed);
   const idealCenter=(stageLeft+stageRight)*.5;
@@ -160,4 +161,60 @@
  },{passive:true});
  addEventListener('load',requestLayout,{once:true});
  requestLayout();
+
+ // Shared left-rail composition and deliberate scene-safe footer rhythm.
+ const info=document.querySelector('.hud-overlay');
+ let context=document.querySelector('.scene-caption');
+ if(context){context.classList.add('ds-context-card');}
+ const contentMap={
+  'aurora-valley':{label:'SCENE NOTES / AURORA VALLEY',title:'Under the northern lights',description:'A snowbound valley beneath an active auroral oval. Choose a vantage point to study the sky.',footer:'WINTER SANCTUARY · LIVE ENVIRONMENT'},
+  'zen-koi-pond':{label:'FIELD NOTES / GARDEN',title:'Stillness in motion',description:'Observe koi, surface ripples and changing light in a quiet garden.',footer:'NATURE STUDY · INTERACTIVE'},
+  'prism-studio':{label:'FIELD NOTES / SCENE',title:'Geometry in space',description:'Explore the forms, materials and lighting of an interactive three-dimensional studio.',footer:'SPATIAL STUDIO · INTERACTIVE'}
+ };
+ if(!context && contentMap[moduleName]){
+  const data=contentMap[moduleName];
+  context=document.createElement('section');context.className='ds-context-card ds-context-generated';
+  context.innerHTML='<div class="ds-context-kicker"></div><h1 class="ds-context-title"></h1><p class="ds-context-desc"></p><div class="ds-context-meta"></div>';
+  context.querySelector('.ds-context-kicker').textContent=data.label;
+  context.querySelector('.ds-context-title').textContent=data.title;
+  context.querySelector('.ds-context-desc').textContent=data.description;
+  context.querySelector('.ds-context-meta').textContent=data.footer;
+  body.append(context);
+ }
+ if(moduleName==='quasar'){
+  const note=document.createElement('section');note.className='ds-quasar-guide';
+  note.innerHTML='<div class="ds-context-kicker">FIELD NOTES / RELATIVITY</div><p class="ds-context-desc">Anchored annotations · gravitational structures</p>';
+  body.append(note);
+  const labelToggle=document.querySelector('[data-k="labels"]');
+  if(labelToggle){
+    const sync=()=>{note.hidden=!labelToggle.checked;};
+    labelToggle.addEventListener('change',sync);sync();
+  }
+ }
+ let noteRaf=0;
+ function alignContext(){
+  noteRaf=0;
+  if(!context)return;
+  if(info){
+   const bounds=info.getBoundingClientRect();
+   context.style.setProperty('--ds-context-top',Math.round(bounds.bottom+14)+'px');
+  }else{
+   context.style.setProperty('--ds-context-top','86px');
+  }
+ }
+ function queueNote(){if(!noteRaf)noteRaf=requestAnimationFrame(alignContext)}
+ if(info&&typeof ResizeObserver!=='undefined')new ResizeObserver(queueNote).observe(info);
+ addEventListener('resize',queueNote,{passive:true});
+ queueNote();
+ // Selected viewpoint belongs to scene context rather than an extra floating card.
+ if(context?.classList.contains('ds-context-generated') && dock){
+  const name=context.querySelector('.ds-context-title');
+  const selection=dock.querySelector('.dock-btn.active,.cam-tab.active');
+  if(selection)name.textContent=selection.textContent.trim();
+  new MutationObserver(()=>{
+   const active=dock.querySelector('.dock-btn.active,.cam-tab.active');
+   if(active)name.textContent=active.textContent.trim();
+  }).observe(dock,{subtree:true,attributes:true,attributeFilter:['class']});
+ }
+
 })();

@@ -1458,13 +1458,14 @@
         return;
       }
 
-      const top = 76 + row * 68;
+      // Consistent ATELIER left rail: header and measured callout spacing.
+      const top = 168 + row * (innerHeight < 760 ? 70 : 82);
       row++;
       L.el.style.display = 'block';
       L.el.style.left = '20px';
       L.el.style.top = top + 'px';
 
-      const x1 = 20 + 250, y1 = top + 22;
+      const x1 = 20 + 292, y1 = top + 22;
       L.line.style.display = 'block';
       L.dot.style.display = 'block';
       L.line.setAttribute('x1', x1);
