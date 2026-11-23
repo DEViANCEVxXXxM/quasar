@@ -1,6 +1,9 @@
 # Quasar
 
 Independent interactive visualization with DEVIANCE / ATELIER Solo UI.
+
+## Try it
+
 Open on [GitHub Pages](https://deviancevxxxxm.github.io/quasar/)
 
 ## Run locally

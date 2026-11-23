@@ -1,4 +1,4 @@
-/* DEVIANCE / ATELIER SOLO — presentation-only layer. No external project links. */
+/* DEVIANCE / ATELIER 3.1 SOLO — presentation-only UI, no project links. */
 (() => {
  const root=document.documentElement;
  const body=document.body;
@@ -40,14 +40,18 @@
   fullscreen:'<path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/>',
   bolt:'<path d="M13 2L5 13h7l-1 9 8-12h-7l1-8z"/>',
   eye:'<path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3"/>',
-  guides:'<circle cx="12" cy="12" r="4"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/>'
+  guides:'<circle cx="12" cy="12" r="4"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/>',
+  stir:'<path d="M3 11c3-6 15-8 17-1 2 8-11 10-12 4-1-4 6-7 8-3"/><path d="M9 4l-3-1-2 3"/>'
  };
  function actionType(b){
   const s=((b.id||'')+' '+(b.title||'')+' '+b.textContent).toLowerCase();
-  if(/substorm|reconnection/.test(s))return ['bolt','Substorm'];
+  if(/substorm|reconnection/.test(s))return ['bolt','Trigger substorm'];
+  if(/eruption/.test(s))return ['bolt','Trigger eruption'];
+  if(/pulse/.test(s))return ['bolt','Trigger pulse'];
   if(/snow/.test(s))return ['snow','Snow'];
   if(/reset/.test(s))return ['reset','Reset'];
-  if(/pause|resume/.test(s))return ['pause','Pause'];
+  if(/pause|resume/.test(s))return ['pause','Pause or resume'];
+  if(/stir|inject|brush/.test(s))return ['stir', /inject/.test(s)?'Inject flow':'Stir flow'];
   if(/guide/.test(s))return ['guides','Guides'];
   if(/fullscreen/.test(s))return ['fullscreen','Fullscreen'];
   if(/drawer|inspector|settings|controls/.test(s))return ['inspector','Inspector'];
@@ -65,6 +69,7 @@
  }
  for(const b of document.querySelectorAll('.top-bar .glass-btn,.top-bar .icon-btn')){
   paint(b);
+  if(b.classList.contains('active'))b.setAttribute('aria-pressed','true');
   if(b.classList.contains('glass-btn'))new MutationObserver(()=>{
    if(!b.querySelector('.ds-action-icon'))paint(b);
   }).observe(b,{childList:true});
@@ -91,7 +96,17 @@
  }
  const dock=document.querySelector('.camera-dock');
  if(dock){
+  dock.setAttribute('role','group');
   dock.setAttribute('aria-label',moduleName==='dimension-lab'?'Spatial dimensions':'Scene perspectives');
+  for(const item of dock.querySelectorAll('.dock-btn,.cam-tab')){
+    item.setAttribute('aria-pressed',String(item.classList.contains('active')));
+  }
+  new MutationObserver(changes=>{
+    for(const change of changes){
+      const el=change.target;
+      if(el.matches?.('.dock-btn,.cam-tab'))el.setAttribute('aria-pressed',String(el.classList.contains('active')));
+    }
+  }).observe(dock,{subtree:true,attributes:true,attributeFilter:['class']});
   if(!dock.querySelector('.ds-dock-label')){
    const label=document.createElement('span');label.className='ds-dock-label';label.textContent=moduleName==='dimension-lab'?'DIMENSIONS':'PERSPECTIVES';dock.prepend(label);
   }

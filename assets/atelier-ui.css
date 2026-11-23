@@ -1,4 +1,4 @@
-/* DEVIANCE / ATELIER UI 3.0 — canonical scene-agnostic design system */
+/* DEVIANCE / ATELIER 3.1 — universal standalone studio UI */
 :root{
  --ui-ink:#edf2fa;--ui-muted:#a0acc0;--ui-faint:#65758c;
  --ui-surface:rgba(9,15,27,.87);--ui-surface-deep:rgba(8,13,23,.95);
@@ -178,3 +178,47 @@ body .cam-tab.active,body .dock-btn.active{background:rgba(var(--ui-rgb),.18)!im
 }
 @media(max-width:395px){body .badge-status,body .fps-pill{max-width:86px!important}body .cam-tab,body .dock-btn{padding:6px 8px!important}}
 @media(max-height:620px) and (min-width:881px){body #inspector,body .inspector{top:81px!important;bottom:71px!important}body .hud-overlay{max-height:calc(100vh - 160px);overflow:auto}}
+
+/* Dimension Lab compact layout: keep the scene title clear of the telemetry panel. */
+@media(max-width:650px){
+ body[data-project-id="dimension-lab"] .scene-caption{top:max(355px,48vh)!important;min-width:0!important;width:min(430px,calc(100vw - 30px))!important;max-width:calc(100vw - 30px)!important}
+}
+
+/* EMBER / tiny screens: preserve four fully visible view choices. */
+@media (max-width:440px){
+  body .camera-dock{width:calc(100vw - 22px)!important;max-width:calc(100vw - 22px)!important;gap:2px!important;padding:4px!important;overflow:hidden!important;justify-content:space-between!important}
+  body .camera-dock .ds-dock-label{display:none!important}
+  body .camera-dock .dock-btn{flex:1 1 0!important;min-width:0!important;padding:6px 2px!important;font-size:9px!important;letter-spacing:-.02em!important;white-space:nowrap!important}
+}
+
+
+/* ATELIER 3.1 / controlled polish, all experiments use identical controls. */
+:root{color-scheme:dark}
+body.ds-solo .action-group .glass-btn,body.ds-solo .top-actions .icon-btn{
+  isolation:isolate!important;line-height:0!important;overflow:visible!important
+}
+body.ds-solo .ds-action-icon,body.ds-solo .ds-action-icon svg{flex:none;vertical-align:middle}
+body.ds-solo .ds-inspector-indicator{opacity:.93}
+body.ds-solo .ds-project-mark{transition:border-color .16s,background .16s}
+body.ds-solo .brand-group:hover .ds-project-mark{border-color:rgba(var(--ui-rgb),.45);background:rgba(var(--ui-rgb),.14)}
+body.ds-solo .tab-btn,body.ds-solo .d-tab{transition:color .15s,background .15s,border-color .15s!important}
+body.ds-solo .camera-dock{scroll-behavior:smooth}
+body.ds-solo .ds-help-toggle:focus-visible,body.ds-solo .dock-btn:focus-visible,body.ds-solo .cam-tab:focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+body.ds-solo .ds-help-panel{max-height:min(390px,calc(100dvh - 145px));overflow-y:auto}
+@media(max-width:650px){
+ body.ds-solo .camera-dock{width:calc(100vw - 22px)!important;max-width:calc(100vw - 22px)!important;min-width:0!important;gap:2px!important;padding:4px!important;justify-content:space-between!important;overflow:hidden!important}
+ body.ds-solo .camera-dock .ds-dock-label{display:none!important}
+ body.ds-solo .camera-dock .dock-btn,body.ds-solo .camera-dock .cam-tab{flex:1 1 0!important;min-width:0!important;max-width:none!important;padding:6px 2px!important;font-size:clamp(8px,2.4vw,10px)!important;letter-spacing:-.02em!important;white-space:nowrap!important}
+}
+@media(max-width:440px){
+ body.ds-solo .badge-status,body.ds-solo .fps-pill{max-width:78px!important}
+ body.ds-solo .brand-title{font-size:11px!important}
+}
+@media(max-width:340px){
+ body.ds-solo .ds-project-mark{flex-basis:32px;width:32px;height:32px}
+ body.ds-solo .brand-group{gap:6px!important}
+ body.ds-solo .ds-brand-kicker{letter-spacing:.045em!important;font-size:7px!important}
+ body.ds-solo .action-group,body.ds-solo .top-actions{gap:2px!important;padding:3px!important}
+ body.ds-solo .action-group .glass-btn,body.ds-solo .top-actions .icon-btn{flex-basis:34px!important;width:34px!important;min-width:34px!important;max-width:34px!important;height:34px!important;min-height:34px!important}
+}
+@media(prefers-reduced-motion:reduce){body.ds-solo .camera-dock{scroll-behavior:auto}}
